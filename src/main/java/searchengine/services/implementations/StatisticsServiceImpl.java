@@ -82,9 +82,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         total.setIndexing(true);
         List<DetailedStatisticsItem> detailed = new ArrayList<>();
         List<Site> sitesList = sites.getSites();
-        for (int i = 0; i < sitesList.size(); i++) {
-            Site site = sitesList.get(i);
-
+        for (Site site : sitesList) {
             DetailedStatisticsItem item = new DetailedStatisticsItem();
             item.setName(site.getName());
             item.setUrl(site.getUrl());

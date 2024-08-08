@@ -14,13 +14,4 @@ import java.util.List;
 public class SitesList {
     private List<Site> sites;
 
-    public Site searchSiteByName(String name) {
-        Site site = new Site();
-        for (Site s : sites) {
-            if (name.contains(s.getName())) {
-                site = s;
-            }
-        }
-        return site;
-    }
 }
