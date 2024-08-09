@@ -37,6 +37,8 @@ public class IndexingServiceImpl implements IndexingService {
     private final PageRepositories pageRepositories;
     private final LemmaRepositories lemmaRepositories;
     private final IndexRepositories indexRepositories;
+    private final List<Site> sitesList = sites.getSites();
+    private final List<SiteEntity> siteEntityList = siteRepositories.findAll();
     private final HashMap<SiteEntity, ServiceLinks> controlWorkIndexingProgress = new HashMap<>();
     private long waitStopForkJoinPool = 1_000;
     private boolean inWork = false;
@@ -52,7 +54,6 @@ public class IndexingServiceImpl implements IndexingService {
         if (!inWork) {
             isStop = false;
             waitStopForkJoinPool = 1_000;
-            List<Site> sitesList = sites.getSites();
             sitesList.forEach(site -> {
                 SiteEntity siteEntity = siteRepositories.findByName(site.getName());
                 siteRepositories.delete(siteEntity);
@@ -63,9 +64,7 @@ public class IndexingServiceImpl implements IndexingService {
                 page.setSiteEntity(createSiteInDataBase(site));
                 page.setPath(site.getUrl());
                 ServiceLinks task = getServiceLinks().setEntity(page);
-                new Thread(() -> {
-                    JOIN_POOL.invoke(task);
-                }).start();
+                new Thread(() -> JOIN_POOL.invoke(task)).start();
                 controlWorkIndexingProgress.put(page.getSiteEntity(), task);
             }
         } else {
@@ -84,7 +83,6 @@ public class IndexingServiceImpl implements IndexingService {
         if (inWork) {
             isStop = true;
             waitStopForkJoinPool = 45_000;
-            List<SiteEntity> siteEntityList = siteRepositories.findAll();
             siteEntityList.forEach(site -> {
                 if (site.getStatus().equals(Status.INDEXING)) {
                     site.setStatus(Status.FAILED);
@@ -108,7 +106,6 @@ public class IndexingServiceImpl implements IndexingService {
     public IndexingResponse indexPage(String urlPage) {
         String resultUrl = java.net.URLDecoder.decode(urlPage, StandardCharsets.UTF_8);
         String atrHref = resultUrl.substring(4).toLowerCase();
-        List<SiteEntity> siteEntityList = siteRepositories.findAll();
         SiteEntity site = new SiteEntity();
         if (!inWork && !siteEntityList.isEmpty()) {
             isStop = false;
@@ -184,7 +181,6 @@ public class IndexingServiceImpl implements IndexingService {
 
     @Override
     public IndexingResponse deleteDataBase() {
-        List<Site> sitesList = sites.getSites();
         sitesList.forEach(site -> {
             SiteEntity siteEntity = siteRepositories.findByName(site.getName());
             siteRepositories.delete(siteEntity);

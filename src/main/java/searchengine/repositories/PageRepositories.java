@@ -6,10 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import searchengine.model.PageEntity;
 
-
 @Repository
 public interface PageRepositories extends JpaRepository<PageEntity, Long> {
-
 
     @Query(value = "SELECT count(*) FROM page_table p where p.site_id = :site_id",
             nativeQuery = true)

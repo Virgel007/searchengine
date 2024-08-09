@@ -97,7 +97,6 @@ public class ServiceLinks extends RecursiveAction {
                     listTask.add(serviceLinks);
                     linkList.add(atrHref);
 
-
                     Connection.Response responsePage = connect(atrHref);
                     Document docPage = responsePage.parse();
 

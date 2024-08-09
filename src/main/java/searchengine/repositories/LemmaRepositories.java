@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import searchengine.model.LemmaEntity;
 import searchengine.model.SiteEntity;
 
-
 @Repository
 public interface LemmaRepositories extends JpaRepository<LemmaEntity, Long> {
 

@@ -26,15 +26,16 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final PageRepositories pageRepositories;
     private final LemmaRepositories lemmaRepositories;
     private final SitesList sites;
-
+    private final StatisticsResponse response = new StatisticsResponse();
+    private final TotalStatistics total = new TotalStatistics();
+    private final StatisticsData data = new StatisticsData();
+    private final List<DetailedStatisticsItem> detailed = new ArrayList<>();
     @Override
     public StatisticsResponse getStatistics() {
         int countLemmas = lemmaRepositories.findAll().size();
-        TotalStatistics total = new TotalStatistics();
         total.setSites(sites.getSites().size());
         total.setLemmas(countLemmas);
         total.setIndexing(true);
-        List<DetailedStatisticsItem> detailed = new ArrayList<>();
         List<SiteEntity> siteEntityList = siteRepositories.findAll();
         if (siteEntityList.isEmpty()) {
             return statisticsIsEmptyDataBase();
@@ -57,15 +58,12 @@ public class StatisticsServiceImpl implements StatisticsService {
             total.setLemmas(total.getLemmas());
             detailed.add(item);
         }
-        StatisticsResponse response = new StatisticsResponse();
-        StatisticsData data = new StatisticsData();
         data.setTotal(total);
         data.setDetailed(detailed);
         response.setStatistics(data);
         response.setResult(true);
         return response;
     }
-
 
     public StatisticsResponse statisticsIsEmptyDataBase() {
         String[] errors = {
@@ -75,23 +73,19 @@ public class StatisticsServiceImpl implements StatisticsService {
         };
         int countPage = 0;
         int countLemmas = 0;
-        TotalStatistics total = new TotalStatistics();
         total.setSites(sites.getSites().size());
         total.setPages(countPage);
         total.setLemmas(countLemmas);
-        total.setIndexing(true);
-        List<DetailedStatisticsItem> detailed = new ArrayList<>();
+        total.setIndexing(false);
         List<Site> sitesList = sites.getSites();
         for (Site site : sitesList) {
             DetailedStatisticsItem item = new DetailedStatisticsItem();
             item.setName(site.getName());
             item.setUrl(site.getUrl());
-
             int pages = 0;
             int lemmas = 0;
             String status = "FAILED";
             long statusTime = 0;
-
             item.setPages(pages);
             item.setLemmas(lemmas);
             item.setStatus(status);
@@ -101,8 +95,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             total.setLemmas(total.getLemmas());
             detailed.add(item);
         }
-        StatisticsResponse response = new StatisticsResponse();
-        StatisticsData data = new StatisticsData();
         data.setTotal(total);
         data.setDetailed(detailed);
         response.setStatistics(data);
