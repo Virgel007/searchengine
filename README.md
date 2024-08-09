@@ -21,13 +21,14 @@ Instructions for the local launch of the project — a sequence of commands and 
 7. Launch the application and open your browser in the view (insert) line (http://localhost:8080 /) without brackets.
    You should see the Search Engine.
 
-![](C:\work\123\src\main\resources\img\1-3.png)
+![1-3](https://github.com/user-attachments/assets/84d3e8f0-343f-430a-97c9-f2704074350a)
 
 The status Failed means that there is no data on this site in the database.
 
 In the Management tab, indexing of sites or pages belonging to the site is started.
 
 ![](C:\work\123\src\main\resources\img\1-4.png)
+
 
 Indicates an indexing error or the database is empty.
 
