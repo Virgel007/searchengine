@@ -60,5 +60,3 @@ The program works in multithreaded mode and uses all processor cores to quickly 
 The final project in the course is a Java programmer from Skill Box.
 The project was completed by Arkady Kruglov.
 Contacts: arkadiy_88@bk.ru
-Telegram: https://t.me/ArkadiyKruglov
-Tel: +7 960 307 3132
