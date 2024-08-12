@@ -170,14 +170,15 @@ public class IndexingServiceImpl implements IndexingService {
         for (Map.Entry<SiteEntity, ServiceLinks> entry : controlWorkIndexingProgress.entrySet()) {
             SiteEntity siteEntity = entry.getKey();
             ServiceLinks serviceLinks = entry.getValue();
-
-            SiteEntity siteStatus = siteRepositories.findByName(siteEntity.getName());
-            String status = String.valueOf(siteStatus.getStatus());
-            if (status.contains("INDEXING") && serviceLinks.isDone()) {
-                siteStatus.setStatus(Status.INDEXED);
-                System.out.println("Индексация сайта:{" + siteEntity.getName() + "}:{" + serviceLinks.isDone() + "}: Status:" + status);
-                siteStatus.setLastError(null);
-                siteRepositories.save(siteStatus);
+            synchronized (siteRepositories) {
+                SiteEntity siteStatus = siteRepositories.findByName(siteEntity.getName());
+                String status = String.valueOf(siteStatus.getStatus());
+                if ("INDEXING".equals(status) && serviceLinks.isDone()) {
+                    siteStatus.setStatus(Status.INDEXED);
+                    System.out.println("Индексация сайта:{" + siteEntity.getName() + "}:{" + serviceLinks.isDone() + "}: Status:" + status);
+                    siteStatus.setLastError(null);
+                    siteRepositories.save(siteStatus);
+                }
             }
         }
     }

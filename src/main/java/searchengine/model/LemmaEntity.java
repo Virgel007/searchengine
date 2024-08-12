@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,6 +27,6 @@ public class LemmaEntity {
     private Integer frequency;
 
     @OneToMany(mappedBy = "lemmaEntity", cascade = CascadeType.ALL)
-    private List<IndexEntity> indexEntityList;
+    private Set<IndexEntity> indexEntityList;
 }
 

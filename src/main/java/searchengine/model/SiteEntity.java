@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,10 +36,10 @@ public class SiteEntity {
     private String name;
 
     @OneToMany(mappedBy = "siteEntity", cascade = CascadeType.ALL)
-    private List<PageEntity> pageEntityList;
+    private Set<PageEntity> pageEntityList;
 
     @OneToMany(mappedBy = "siteEntity", cascade = CascadeType.ALL)
-    private List<LemmaEntity> lemmaEntityList;
+    private Set<LemmaEntity> lemmaEntityList;
 
     public SiteEntity setStatus(Status status) {
         this.statusTime = new Date();
