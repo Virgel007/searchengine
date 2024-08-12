@@ -56,7 +56,9 @@ public class IndexingServiceImpl implements IndexingService {
             List<Site> sitesList = sites.getSites();
             sitesList.forEach(site -> {
                 SiteEntity siteEntity = siteRepositories.findByName(site.getName());
-                siteRepositories.delete(siteEntity);
+                if (siteEntity != null) {
+                    siteRepositories.delete(siteEntity);
+                }
             });
             controlWorkIndexingProgress.clear();
             for (Site site : sitesList) {

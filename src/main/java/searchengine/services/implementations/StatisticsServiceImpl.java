@@ -26,12 +26,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final PageRepositories pageRepositories;
     private final LemmaRepositories lemmaRepositories;
     private final SitesList sites;
-    private final StatisticsResponse response = new StatisticsResponse();
-    private final TotalStatistics total = new TotalStatistics();
-    private final StatisticsData data = new StatisticsData();
-    private final List<DetailedStatisticsItem> detailed = new ArrayList<>();
     @Override
     public StatisticsResponse getStatistics() {
+        TotalStatistics total = new TotalStatistics();
+        List<DetailedStatisticsItem> detailed = new ArrayList<>();
         int countLemmas = lemmaRepositories.findAll().size();
         total.setSites(sites.getSites().size());
         total.setLemmas(countLemmas);
@@ -41,6 +39,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             return statisticsIsEmptyDataBase();
         }
         for (SiteEntity siteEntity : siteEntityList) {
+
             DetailedStatisticsItem item = new DetailedStatisticsItem();
             item.setName(siteEntity.getName());
             item.setUrl(siteEntity.getUrl());
@@ -58,14 +57,18 @@ public class StatisticsServiceImpl implements StatisticsService {
             total.setLemmas(total.getLemmas());
             detailed.add(item);
         }
+        StatisticsData data = new StatisticsData();
         data.setTotal(total);
         data.setDetailed(detailed);
+        StatisticsResponse response = new StatisticsResponse();
         response.setStatistics(data);
         response.setResult(true);
         return response;
     }
 
     public StatisticsResponse statisticsIsEmptyDataBase() {
+        List<DetailedStatisticsItem> detailed = new ArrayList<>();
+        TotalStatistics total = new TotalStatistics();
         String[] errors = {
                 "Ошибка индексации: главная страница сайта не доступна",
                 "Ошибка индексации: сайт не доступен",
@@ -95,8 +98,10 @@ public class StatisticsServiceImpl implements StatisticsService {
             total.setLemmas(total.getLemmas());
             detailed.add(item);
         }
+        StatisticsData data = new StatisticsData();
         data.setTotal(total);
         data.setDetailed(detailed);
+        StatisticsResponse response = new StatisticsResponse();
         response.setStatistics(data);
         response.setResult(true);
         return response;

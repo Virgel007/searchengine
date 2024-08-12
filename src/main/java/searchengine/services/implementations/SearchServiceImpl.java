@@ -29,12 +29,11 @@ public class SearchServiceImpl implements SearchService {
     private final ServiceLemma serviceLemma;
     private final LemmaRepositories lemmaRepositories;
     private final IndexRepositories indexRepositories;
-    private final SearchResponse response = new SearchResponse();
-    private final List<LemmaEntity> searchLemmaList = new ArrayList<>();
-    private List<String> lemmaList;
 
     @Override
     public SearchResponse search(String query, int offset, int limit, String site) {
+        SearchResponse response = new SearchResponse();
+        List<LemmaEntity> searchLemmaList = new ArrayList<>();
         if (site != null) {
             searchLemmaList.addAll(searchLemmasInSite(query, site));
         } else searchLemmaList.addAll(searchLemmasAllSites(query));
@@ -161,7 +160,7 @@ public class SearchServiceImpl implements SearchService {
     public List<LemmaEntity> searchLemmasInSite(String query, String site) {
         List<LemmaEntity> searchResult = new ArrayList<>();
         List<String> words = serviceLemma.splitTextIntoWords(query);
-        lemmaList = serviceLemma.createLemmaList(words);
+        List<String> lemmaList = serviceLemma.createLemmaList(words);
         List<LemmaEntity> lemmaEntityListInDataBase = lemmaRepositories.findAll();
         String siteURL = java.net.URLDecoder.decode(site, StandardCharsets.UTF_8);
         for (LemmaEntity lemmaEntity : lemmaEntityListInDataBase) {
@@ -177,7 +176,7 @@ public class SearchServiceImpl implements SearchService {
     public List<LemmaEntity> searchLemmasAllSites(String query) {
         List<LemmaEntity> searchResult = new ArrayList<>();
         List<String> words = serviceLemma.splitTextIntoWords(query);
-        lemmaList = serviceLemma.createLemmaList(words);
+        List<String> lemmaList = serviceLemma.createLemmaList(words);
         List<LemmaEntity> lemmaEntityListInDataBase = lemmaRepositories.findAll();
         for (LemmaEntity lemmaEntity : lemmaEntityListInDataBase) {
             if (lemmaList.contains(lemmaEntity.getLemma())) {
