@@ -174,8 +174,8 @@ public class IndexingServiceImpl implements IndexingService {
             SiteEntity siteStatus = siteRepositories.findByName(siteEntity.getName());
             String status = String.valueOf(siteStatus.getStatus());
             if (status.contains("INDEXING") && serviceLinks.isDone()) {
-                System.out.println(serviceLinks.isDone() + "   " + status);
                 siteStatus.setStatus(Status.INDEXED);
+                System.out.println("Индексация сайта:{" + siteEntity.getName() + "}:{" + serviceLinks.isDone() + "}: Status:" + status);
                 siteStatus.setLastError(null);
                 siteRepositories.save(siteStatus);
             }
