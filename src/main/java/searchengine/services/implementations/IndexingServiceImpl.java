@@ -43,6 +43,15 @@ public class IndexingServiceImpl implements IndexingService {
     private boolean inWork = false;
     private boolean isStop = false;
 
+    /**
+     * Indexing starts and stops almost immediately, but due to the features of Forkjoinpool,
+     * a quick start and start is not possible without errors, it takes time,
+     * for this a simple delay method is used for correct operation.
+     * Description of the work:
+     * the first start occurs immediately, then when the user stops,
+     * a delay is set for re-indexing for 45 seconds.
+     * @waitStopForkJoinPool
+     */
     @Override
     public IndexingResponse startIndexing() {
         try {

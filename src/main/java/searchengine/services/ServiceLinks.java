@@ -31,11 +31,8 @@ public class ServiceLinks extends RecursiveAction {
     private final IndexRepositories indexRepositories;
     private final IndexingServiceImpl indexingService;
     private final ServiceLemma serviceLemma;
-
     private HashSet<String> linkList;
     private PageEntity pageEntity;
-    Connection.Response response;
-
     static boolean stop = false;
 
     public ServiceLinks setEntity(PageEntity pageEntity, HashSet<String> linkList) {
@@ -64,8 +61,8 @@ public class ServiceLinks extends RecursiveAction {
         try {
 
             Thread.sleep(150);
-            response = connect(pageEntity.getPath());
-            Document document = response.parse();
+            Connection.Response responseFirst = connect(pageEntity.getPath());
+            Document document = responseFirst.parse();
             Elements elements = document.select("a[href]");
 
             for (Element element : elements) {
