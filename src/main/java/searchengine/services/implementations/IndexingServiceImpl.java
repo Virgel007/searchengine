@@ -50,7 +50,6 @@ public class IndexingServiceImpl implements IndexingService {
      * Description of the work:
      * the first start occurs immediately, then when the user stops,
      * a delay is set for re-indexing for 45 seconds.
-     * @waitStopForkJoinPool
      */
     @Override
     public IndexingResponse startIndexing() {
